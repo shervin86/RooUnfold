@@ -41,7 +41,8 @@ ROOTSYS      ?= ERROR_RootSysIsNotDefined
 
 -include $(ROOTSYS)/test/Makefile.arch
 ifeq ($(ROOTCONFIG),)
-ROOTCONFIG    = $(ROOTSYS)/bin/root-config
+#ROOTCONFIG    = $(ROOTSYS)/bin/root-config
+ROOTCONFIG    = root-config
 endif
 
 ifeq ($(ARCH),)
