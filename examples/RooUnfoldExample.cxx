@@ -52,7 +52,7 @@ void RooUnfoldExample()
 #ifdef __CINT__
   gSystem->Load("libRooUnfold");
 #endif
-
+  double weight=10;
   cout << "==================================== TRAIN ====================================" << endl;
   RooUnfoldResponse response (40, -10.0, 10.0);
 
@@ -61,9 +61,9 @@ void RooUnfoldExample()
     Double_t xt= gRandom->BreitWigner (0.3, 2.5);
     Double_t x= smear (xt);
     if (x!=cutdummy)
-      response.Fill (x, xt,10);
+      response.Fill (x, xt,weight);
     else
-      response.Miss (xt);
+      response.Miss (xt, weight);
   }
 
   cout << "==================================== TEST =====================================" << endl;
@@ -72,8 +72,8 @@ void RooUnfoldExample()
   // Test with a Gaussian, mean 0 and width 2.
   for (Int_t i=0; i<10000; i++) {
     Double_t xt= gRandom->Gaus (0.0, 2.0), x= smear (xt);
-    hTrue->Fill(xt);
-    if (x!=cutdummy) hMeas->Fill(x);
+    hTrue->Fill(xt, weight);
+    if (x!=cutdummy) hMeas->Fill(x, weight);
   }
 
   cout << "==================================== UNFOLD ===================================" << endl;
