@@ -11,6 +11,7 @@
 
 #if !defined(__CINT__) || defined(__MAKECINT__)
 #include <iostream>
+
 using std::cout;
 using std::endl;
 
@@ -60,7 +61,7 @@ void RooUnfoldExample()
     Double_t xt= gRandom->BreitWigner (0.3, 2.5);
     Double_t x= smear (xt);
     if (x!=cutdummy)
-      response.Fill (x, xt);
+      response.Fill (x, xt,10);
     else
       response.Miss (xt);
   }
@@ -83,10 +84,24 @@ void RooUnfoldExample()
   TH1D* hReco= (TH1D*) unfold.Hreco();
 
   unfold.PrintTable (cout, hTrue);
-  hReco->Draw();
-  hMeas->Draw("SAME");
-  hTrue->SetLineColor(8);
+  double yMax= (hMeas->GetMaximum() > hTrue->GetMaximum()) ?  hMeas->GetMaximum() : hTrue->GetMaximum();
+  
+  hMeas->SetFillColor(kGray);
+  hMeas->SetFillStyle(1001);
+  hMeas->SetMaximum(yMax*1.2);
+  hMeas->Draw("");
+  hTrue->SetLineColor(2);
+  hTrue->SetLineWidth(2);
   hTrue->Draw("SAME");
+  hReco->Draw("same");
+  
+  
+  TLegend *leg = new TLegend(0.7,0.7,1,1);
+  leg->SetBorderSize(1);
+  leg->AddEntry(hReco, "reco","p");
+  leg->AddEntry(hMeas, "meas","lf");
+  leg->AddEntry(hTrue, "true", "l");
+  leg->Draw();
 }
 
 #ifndef __CINT__
